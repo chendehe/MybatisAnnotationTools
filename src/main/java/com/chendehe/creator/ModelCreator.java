@@ -33,7 +33,7 @@ public class ModelCreator extends AbstractCreator {
         template = template.replaceAll("#<createUser>", System.getProperty("user.name"));
         String createTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
         template = template.replaceAll("#<createTime>", createTime);
-        FileUtils.writeToFile(FileUtils.createFile(table.getDaoFolder().concat("Page.java")), template);
+        FileUtils.writeToFile(FileUtils.createFile(table.getModelFolder().concat("Page.java")), template);
     }
 
     private String createModelFileContent(String longTableName) {

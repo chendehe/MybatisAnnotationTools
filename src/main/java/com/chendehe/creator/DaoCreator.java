@@ -20,18 +20,20 @@ public class DaoCreator extends AbstractCreator {
     }
 
     public void createDao() {
-        table.getTableFields()
-            .forEach((longTableName, fields) -> FileUtils.writeToFile(
-                FileUtils.createFile(table.getDaoFolder().concat(getDaoName(longTableName).concat(JAVA))),
-                createDaoFileContent(longTableName)));
+        fieldsForEach((longTableName, fields) -> FileUtils.writeToFile(
+            getDaoFilePath(longTableName), createDaoFileContent(longTableName))
+        );
 
-        //
+        createCommonClass();
+    }
+
+    private void createCommonClass() {
         String template = FileUtils.getTemplate("common/BaseDao.java");
         template = template.replaceAll("#<daoPackage>", table.getDaoPackage());
         template = template.replaceAll("#<createUser>", System.getProperty("user.name"));
         String createTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
         template = template.replaceAll("#<createTime>", createTime);
-        FileUtils.writeToFile(FileUtils.createFile(table.getDaoFolder().concat("BaseDao.java")), template);
+        FileUtils.writeToFile(table.getDaoFolder().concat("BaseDao.java"), template);
     }
 
     private String createDaoFileContent(String longTableName) {

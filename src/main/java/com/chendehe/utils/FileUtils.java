@@ -24,7 +24,7 @@ public final class FileUtils {
      *            全路径文件
      * @return File
      */
-    public static File createFile(String fileName) {
+    private static File createFile(String fileName) {
         File file = new File(fileName);
         return file.getParentFile().mkdirs() ? file : file;
     }
@@ -32,13 +32,15 @@ public final class FileUtils {
     /**
      * 写入文件
      * 
-     * @param file
-     *            File
+     * @param fileName
+     *            模板文件名
      * @param content
      *            内容
      */
-    public static void writeToFile(File file, String content) {
-        try (OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(file), Charset.defaultCharset())) {
+    public static void writeToFile(String fileName, String content) {
+        try (FileOutputStream fos = new FileOutputStream(createFile(fileName));
+            OutputStreamWriter osw = new OutputStreamWriter(fos, Charset.defaultCharset())) {
+
             osw.write(content.trim());
             osw.flush();
         } catch (IOException e) {

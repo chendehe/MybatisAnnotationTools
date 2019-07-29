@@ -1,5 +1,5 @@
 ## MybatisAnnotationTools
-基于注解的 Mybatis 代码生成工具。
+基于注解的 Mybatis 代码生成工具，Mybatis-3.5 可用。
 ### 功能：
 1. 可以自动生成 PO 和 DAO CRUD 的 Java 类
 2. 可配置`application.properties`

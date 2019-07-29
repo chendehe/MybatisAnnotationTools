@@ -22,18 +22,20 @@ public class ModelCreator extends AbstractCreator {
     }
 
     public void createModel() {
-        table.getTableFields()
-            .forEach((longTableName, fields) -> FileUtils.writeToFile(
-                FileUtils.createFile(table.getModelFolder().concat(getModelName(longTableName).concat(JAVA))),
-                createModelFileContent(longTableName)));
+        fieldsForEach((longTableName, fields) -> FileUtils.writeToFile(
+            getModelFilePath(longTableName), createModelFileContent(longTableName))
+        );
 
-        //
+        createCommonClass();
+    }
+
+    private void createCommonClass() {
         String template = FileUtils.getTemplate("common/Page.java");
         template = template.replaceAll("#<modelPackage>", table.getModelPackage());
         template = template.replaceAll("#<createUser>", System.getProperty("user.name"));
         String createTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
         template = template.replaceAll("#<createTime>", createTime);
-        FileUtils.writeToFile(FileUtils.createFile(table.getModelFolder().concat("Page.java")), template);
+        FileUtils.writeToFile(table.getModelFolder().concat("Page.java"), template);
     }
 
     private String createModelFileContent(String longTableName) {
@@ -84,10 +86,14 @@ public class ModelCreator extends AbstractCreator {
     private String getGetterContent(Field field) {
         String fieldType = field.getFieldType();
         String templateGetter =
-            "    public #<javaType> get#<metholdPostName>() {\n        return #<javaFieldName>;\n    }\n\n";
+            "    public #<javaType> get#<metholdPostName>() {\n        "
+                + "return #<javaFieldName>;\n    "
+                + "}\n\n";
         if ("BIT".equals(fieldType)) {
             templateGetter =
-                "    public #<javaType> is#<metholdPostName>() {\n        return #<javaFieldName>;\n    }\n\n";
+                "    public #<javaType> is#<metholdPostName>() {\n        "
+                    + "return #<javaFieldName>;\n    "
+                    + "}\n\n";
         }
         return getMetholdContent(templateGetter, field);
     }
@@ -95,11 +101,12 @@ public class ModelCreator extends AbstractCreator {
     private String getSetterContent(Field field) {
         String templateSetter;
         if ("String".equalsIgnoreCase(field.getJavaType())) {
-            templateSetter =
-                "    public void set#<metholdPostName>(#<javaType> #<javaFieldName>) {\n        this.#<javaFieldName> = #<javaFieldName> == null ? null : #<javaFieldName>.trim();\n    }\n\n";
+            templateSetter = "    public void set#<metholdPostName>(#<javaType> #<javaFieldName>) {\n"
+                + "        this.#<javaFieldName> = #<javaFieldName> == null ? null : #<javaFieldName>.trim();\n    "
+                + "}\n\n";
         } else {
-            templateSetter =
-                "    public void set#<metholdPostName>(#<javaType> #<javaFieldName>) {\n        this.#<javaFieldName> = #<javaFieldName>;\n    }\n\n";
+            templateSetter = "    public void set#<metholdPostName>(#<javaType> #<javaFieldName>) {\n        "
+                + "this.#<javaFieldName> = #<javaFieldName>;\n    " + "}\n\n";
 
         }
         return getMetholdContent(templateSetter, field);

@@ -1,0 +1,2 @@
+# MybatisAnnotationTools
+生成Mybatis接口注解CRUD

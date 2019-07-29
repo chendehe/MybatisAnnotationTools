@@ -42,7 +42,7 @@ java.dao.suffix=Dao
  - main 启动类：`Bootstrap.java`
  - 配置文件：`resources/application.properties`目录
  - 模板文件位置：`resources`目录
-## 例子
+### 例子
 有表`t_student`和`t_user`，用默认配置会在`E:/CODE/github`生成`dao`和`po`目录，里面的内容如下：
 ```
 ├─dao

@@ -1,5 +1,7 @@
 package com.chendehe;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -12,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.chendehe.creator.DaoCreator;
 import com.chendehe.creator.ModelCreator;
@@ -28,9 +32,12 @@ public class Bootstrap {
     private static final String ENABLED = "true";
     private static final String PROP_FILE_NAME = "application.properties";
 
+    private static String propPath = "";
     private static final Properties PROP = new Properties();
 
     public static void main(String[] args) throws Exception {
+
+        propPath = StringUtils.isAllBlank(args) ? "" : args[0];
 
         Map<String, List<Field>> tableFields = new HashMap<>();
 
@@ -47,8 +54,15 @@ public class Bootstrap {
     }
 
     private static Table queryProperties(Map<String, List<Field>> tableFields) throws IOException {
-        try (InputStream resourceAsStream = ClassLoader.getSystemClassLoader().getResourceAsStream(PROP_FILE_NAME)) {
-            PROP.load(resourceAsStream);
+        if (StringUtils.isBlank(propPath)) {
+            try (
+                InputStream resourceAsStream = ClassLoader.getSystemClassLoader().getResourceAsStream(PROP_FILE_NAME)) {
+                PROP.load(resourceAsStream);
+            }
+        } else {
+            try (InputStream resourceAsStream = new FileInputStream(new File(propPath))) {
+                PROP.load(resourceAsStream);
+            }
         }
 
         Table table = new Table();

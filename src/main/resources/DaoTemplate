@@ -1,0 +1,100 @@
+package #<daoPackage>;
+
+import java.io.Serializable;
+import java.util.List;
+
+import #<modelPackage>.#<modelName>;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+
+/**
+ * #<tableComment>(#<tableName>).
+ *
+ * @author #<createUser>
+ * @since #<createTime>
+ */
+@Mapper
+public interface #<daoName> extends BaseDao<#<daoName>> {
+
+
+    /**
+     * 分页查询
+     *
+     * @param page 分页
+     * @return 结果集
+     */
+    @Select("select * from #<tableName> limit #{page.currentPage}, #{page.pageSize}")
+    List<#<modelName>> listByPage(@Param("page") Page page);
+
+    /**
+     * 根据id查询
+     *
+     * @param id  id
+     * @return po
+     */
+    @Select("select * from #<tableName> where id = #{id}")
+    Optional<#<modelName>> getById(Serializable id);
+
+    /**
+     * 单个插入
+     *
+     * @param po po
+     */
+    @Insert("insert into #<tableName>(#<fields>) "
+        + "values(#<insertValues>)")
+    void save(#<modelName> po);
+
+    /**
+     * 批量插入
+     *
+     * @param list po列表
+     */
+    @Insert("<script>insert into #<tableName>(#<fields>) values "
+        + "<foreach collection='list' index='index' item='n' separator=','> "
+        + "(#<batchInsertValues>)"
+        + "</foreach></script>")
+    void saveBatch(@Param("list") List<#<modelName>> list);
+
+    /**
+     * 更新
+     *
+     * @param po po
+     */
+    @Update("update #<tableName> set #<updateValues> where id = #{id}")
+    void update(#<modelName> po);
+
+    /**
+     * 单个删除
+     *
+     * @param id id
+     */
+    @Delete("delete from #<tableName> where id = #{id}")
+    void remove(Serializable id);
+
+    /**
+     * 批量删除
+     *
+     * @param ids id 集合
+     */
+    @Delete("<script>delete from #<tableName> where id in "
+        + "<foreach collection='ids' index='index' item='id' open='(' separator=',' close=')'>"
+        + "#{id}"
+        + "</foreach></script>")
+    void removeByIds(@Param("ids") Set<Serializable> ids);
+
+    /**
+     * 统计
+     *
+     * @return 数量
+     */
+    @Select("select count(*) from #<tableName>")
+    int count();
+}

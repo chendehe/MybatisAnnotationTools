@@ -36,9 +36,12 @@ java.dao.suffix=Dao
 1. 在`pom.xml`文件目录下执行`mvn clean package -Dmaven.test.skip=true`
 2. 在生成的`target`目录下取出可以直接执行的 jar 包：`annotation-Tools-1.0-jar-with-dependencies.jar`
 3. 在上面这个 jar 包目录下执行`java -jar annotation-Tools-1.0-jar-with-dependencies.jar`即可执行默认配置；也可以把`application.properties`配置文件取出来修改，执行命令的时候在后面加上配置文件绝对路径`{绝对路径}\application.properties`来执行配置文件的位置。
-
+### 代码结构
+ - main 启动类：`Bootstrap.java`
+ - 配置文件：`resources/application.properties`目录
+ - 模板文件位置：`resources`目录
 ## 例子
-有表`t_student`和`t_user`用默认配置会在`E:/CODE/github`生成`dao`和`po`目录，里面的内容如下：
+有表`t_student`和`t_user`，用默认配置会在`E:/CODE/github`生成`dao`和`po`目录，里面的内容如下：
 ```
 ├─dao
 │      BaseDao.java

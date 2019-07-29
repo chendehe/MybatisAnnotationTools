@@ -33,6 +33,8 @@ java.dao.prefix=
 java.dao.suffix=Dao
 ```
 ### 运行
+> 可以跳过打包直接[下载](https://github.com/chendehe/MybatisAnnotationTools/releases)
+
 1. 在`pom.xml`文件目录下执行`mvn clean package -Dmaven.test.skip=true`
 2. 在生成的`target`目录下取出可以直接执行的 jar 包：`annotation-Tools-1.0-jar-with-dependencies.jar`
 3. 在上面这个 jar 包目录下执行`java -jar annotation-Tools-1.0-jar-with-dependencies.jar`即可执行默认配置；也可以把`application.properties`配置文件取出来修改，执行命令的时候在后面加上配置文件绝对路径`{绝对路径}\application.properties`来执行配置文件的位置。

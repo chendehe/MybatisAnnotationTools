@@ -1,10 +1,12 @@
 package com.chendehe.utils;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.Optional;
 
 /**
@@ -36,9 +38,9 @@ public final class FileUtils {
      *            内容
      */
     public static void writeToFile(File file, String content) {
-        try (FileWriter fw = new FileWriter(file)) {
-            fw.write(content.trim());
-            fw.flush();
+        try (OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(file), Charset.defaultCharset())) {
+            osw.write(content.trim());
+            osw.flush();
         } catch (IOException e) {
             throw new RuntimeException("write file failed!");
         }
